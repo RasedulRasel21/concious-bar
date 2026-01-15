@@ -1,0 +1,258 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:sections.footer-group.name",
+  "sections": {
+    "multicolumn-with-icons": {
+      "type": "multicolumn-with-icons",
+      "blocks": {
+        "column-1": {
+          "type": "column",
+          "settings": {
+            "icon": "support",
+            "custom_icon": "",
+            "heading": "Customer service",
+            "text": "<p>It’s not actually free we just price it into the products.</p>",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "column-2": {
+          "type": "column",
+          "settings": {
+            "icon": "box",
+            "custom_icon": "",
+            "heading": "Fast Free Shipping",
+            "text": "<p>Get free shipping on orders of $150 or more</p>",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "column-3": {
+          "type": "column",
+          "settings": {
+            "icon": "users",
+            "custom_icon": "",
+            "heading": "Refer a friend",
+            "text": "<p>Refer a friend and get 15% off each other.</p>",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "column-4": {
+          "type": "column",
+          "settings": {
+            "icon": "shield",
+            "custom_icon": "",
+            "heading": "Secure payment",
+            "text": "<p>Your payment information is processed securely</p>",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        }
+      },
+      "block_order": [
+        "column-1",
+        "column-2",
+        "column-3",
+        "column-4"
+      ],
+      "disabled": true,
+      "settings": {
+        "style": "with-background",
+        "columns": 4,
+        "text_alignment": "left",
+        "heading": "",
+        "heading_size": "title-md",
+        "heading_alignment": "text-center md:items-center",
+        "heading_tag": "h2",
+        "subheading": "",
+        "description": "",
+        "button_label": "",
+        "button_link": "",
+        "button_external": false,
+        "button_icon": true,
+        "highlighted_text": "none",
+        "highlighted_scribble": "circle",
+        "color_text": "",
+        "color_background": "",
+        "gradient_background": "",
+        "color_highlight": "",
+        "gradient_highlight": "",
+        "color_button_text": "",
+        "color_button_background": "",
+        "color_button_gradient": "",
+        "padding_top": 60,
+        "padding_bottom": 28,
+        "divider": false,
+        "full_width": false,
+        "rounded": false
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_list-1": {
+          "type": "link_list",
+          "disabled": true,
+          "settings": {
+            "heading": "Collections",
+            "menu": "footer",
+            "container_width": 33,
+            "opened": false
+          }
+        },
+        "link_list-2": {
+          "type": "link_list",
+          "disabled": true,
+          "settings": {
+            "heading": "Quick links",
+            "menu": "footer",
+            "container_width": 33,
+            "opened": false
+          }
+        },
+        "link_list_iLcnxK": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Information",
+            "menu": "footer",
+            "container_width": 15,
+            "opened": true
+          }
+        },
+        "text_9wQgXP": {
+          "type": "text",
+          "settings": {
+            "heading": "Begin with the fundamentals.",
+            "text": "<p>Frameworks that make the craft feel simple again.</p>",
+            "container_width": 20,
+            "opened": true
+          }
+        },
+        "brand_information": {
+          "type": "brand_information",
+          "settings": {
+            "heading": "",
+            "button_label_1": "",
+            "button_link_1": "tel:+21(0)987654321",
+            "button_label_2": "",
+            "button_link_2": "mailto:hello@domain.com",
+            "button_label_3": "",
+            "button_link_3": "",
+            "button_label_4": "",
+            "button_link_4": "",
+            "container_width": 95,
+            "opened": false
+          }
+        },
+        "logo_social_AyJUBX": {
+          "type": "logo_social",
+          "disabled": true,
+          "settings": {
+            "logo": "shopify://shop_images/emouriblindblack.svg",
+            "logo_height": 50,
+            "show_social": false,
+            "enable_follow_on_shop": false
+          }
+        }
+      },
+      "block_order": [
+        "link_list-1",
+        "link_list-2",
+        "link_list_iLcnxK",
+        "text_9wQgXP",
+        "brand_information",
+        "logo_social_AyJUBX"
+      ],
+      "settings": {
+        "invert_newsletter_others": true,
+        "enable_newsletter": true,
+        "newsletter_heading": "Stay in the loop for new studies and tools.",
+        "newsletter_heading_size": "md:title-sm",
+        "newsletter_text": "",
+        "newsletter_logo": "{{ shop.brand.logo }}",
+        "newsletter_logo_height": 20,
+        "show_social": true,
+        "enable_follow_on_shop": false,
+        "color_text": "#000000",
+        "color_background": "#eff3f4",
+        "gradient_background": "linear-gradient(90deg, rgba(NaN, NaN, NaN, 0), rgba(196, 207, 164, 1) 100%)",
+        "color_button_text": "#eff3f4",
+        "color_button_background": "#000000",
+        "color_button_gradient": "",
+        "padding_top": 120,
+        "padding_bottom": 120,
+        "divider": true,
+        "full_width": false,
+        "rounded": true,
+        "enable_parallax": true
+      }
+    },
+    "footer-copyright": {
+      "type": "footer-copyright",
+      "disabled": true,
+      "settings": {
+        "enable_language_selector": true,
+        "enable_country_selector": true,
+        "show_policy": true,
+        "show_payment_icons": true,
+        "monochrome_payment_icons": true,
+        "show_copyright": true,
+        "copyright_text": "",
+        "color_text": "#0b61cd",
+        "color_background": "#eff3f4",
+        "gradient_background": "linear-gradient(90deg, rgba(NaN, NaN, NaN, 0), rgba(155, 166, 127, 1) 100%)",
+        "divider": false,
+        "full_width": true,
+        "rounded": true,
+        "enable_parallax": true
+      }
+    },
+    "1763483507f98cf982": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4268b79_V8RxGB": {
+          "type": "ai_gen_block_4268b79",
+          "settings": {
+            "logo": "shopify://shop_images/emouriblindblack.svg",
+            "logo_link": "",
+            "alignment": "center",
+            "logo_max_width": 1000,
+            "padding_top": 0,
+            "padding_bottom": 40,
+            "logo_max_width_mobile": 500,
+            "padding_top_mobile": 30,
+            "padding_bottom_mobile": 30,
+            "background_color": "#eff3f4"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4268b79_V8RxGB"
+      ],
+      "settings": {}
+    },
+    "1763098006f26448dc": {
+      "type": "_blocks",
+      "disabled": true,
+      "settings": {}
+    }
+  },
+  "order": [
+    "multicolumn-with-icons",
+    "footer",
+    "footer-copyright",
+    "1763483507f98cf982",
+    "1763098006f26448dc"
+  ]
+}

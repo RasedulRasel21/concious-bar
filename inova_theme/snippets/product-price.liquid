@@ -1,0 +1,343 @@
+{%- doc -%}
+  Renders product pricing with sale detection, unit prices, and dynamic price ranges.
+
+  Displays comprehensive pricing information including regular prices, sale prices, price ranges for products with variants, and unit pricing. Automatically detects sales, formats currencies, and handles various pricing scenarios with proper accessibility support.
+
+  @param {object} [product] - Shopify product object for pricing
+  @param {object} [variant] - Specific variant for single price display
+  @param {boolean} [use_variant] - Show variant price vs product range
+  @param {boolean} [placeholder] - Display placeholder $19.99 price
+  @param {boolean} [hide_unit_price] - Hide unit price information
+  @param {boolean} [skip_to_price] - Skip quantity break considerations
+  @param {string} [class] - Additional CSS classes
+  @param {string} [price_type] - Price type: 'hp' for home/card, 'pp' for product page
+
+  @example
+  {% render 'product-price',
+     product: product,
+     variant: product.selected_variant,
+     use_variant: true
+  %}
+{%- enddoc -%}
+
+<style>
+  .hp_price {
+    display: flex;
+    gap: 10px;
+    flex-direction: row-reverse;
+  }
+  .pp_price {
+    display: flex;
+    gap: 10px;
+    flex-direction: row-reverse;
+  }
+  .hp_price .badge {
+    position: absolute;
+  }
+  .pp_price .badge {
+    position: absolute;
+  }
+  .pp_price .isHidden {
+    display: none !important;
+  }
+  .pp_price .isShow {
+    display: block !important;
+  }
+  .islinethrough {
+    text-decoration: line-through !important;
+  }
+  .tiered-price {
+    display: none;
+  }
+  .tiered-price .badge {
+    font-size: 0.75em;
+    color: var(--color-sale, #e53e3e);
+    margin-left: 5px;
+  }
+</style>
+
+{%- liquid
+  if use_variant
+    assign target = variant | default: product.selected_or_first_available_variant
+  elsif placeholder
+    assign target = null
+  else
+    assign target = product
+  endif
+
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price | default: 1999
+
+  assign on_sale = false
+  if compare_at_price > price
+    assign on_sale = true
+  endif
+-%}
+
+{%- liquid
+  assign price_class = price_type | default: 'hp'
+  assign price_class = price_class | append: '_price'
+
+  assign discounted_price5 = price | times: 0.95
+  assign discount_amount5 = price | minus: discounted_price5
+
+  assign discounted_price15 = price | times: 0.85
+  assign discount_amount15 = price | minus: discounted_price15
+
+  assign discounted_price20 = price | times: 0.80
+  assign discount_amount20 = price | minus: discounted_price20
+-%}
+
+<div class="price {{ price_class }}
+  {%- if on_sale %} price--on-sale{% endif -%}
+  {%- if class != blank %} {{ class }}{% endif -%}"
+>
+  {%- if on_sale -%}
+    <span class="sr-only">{{ 'products.price.sale_price' | t }}</span>
+  {%- endif -%}
+
+  <span class="price__regular regularPrice_noOff whitespace-nowrap" data-product-id="{{ product.id }}">
+    {%- liquid
+      if product.quantity_price_breaks_configured? != true or skip_to_price
+        if target == product and product.price_varies
+          if settings.currency_code_enabled
+            assign price_min = product.price_min | money_with_currency
+          else
+            assign price_min = product.price_min | money
+          endif
+          echo 'products.price.from_price_html' | t: price: price_min
+        else
+          if settings.currency_code_enabled
+            echo price | money_with_currency
+          else
+            echo price | money
+          endif
+        endif
+      else
+        if settings.currency_code_enabled
+          assign price_min = product.price_min | money_with_currency
+        else
+          assign price_min = product.price_min | money
+        endif
+        echo 'products.price.from_price_html' | t: price: price_min
+      endif
+    -%}
+  </span>
+
+  {%- comment -%} Tiered discount prices - 5% off for 5-9 items {%- endcomment -%}
+  <span class="price_5 tiered-price" data-product-id="{{ product.id }}" data-price-multiplier="0.95" style="display: none;">
+    {{ discounted_price5 | money }}
+    <span class="badge">
+      {%- render 'icon', icon: 'discount' -%}
+      5% off on 5 bars
+      {%- if price_type == 'pp' -%}
+        (<span class="igPrice" data-product-id="{{ product.id }}" data-price-multiplier="0.05">-{{ discount_amount5 | money_with_currency }}</span>)
+      {%- endif -%}
+    </span>
+  </span>
+
+  {%- comment -%} Tiered discount prices - 15% off for 10-14 items {%- endcomment -%}
+  <span class="price_15 tiered-price" data-product-id="{{ product.id }}" data-price-multiplier="0.85" style="display: none;">
+    {{ discounted_price15 | money }}
+    <span class="badge">
+      {%- render 'icon', icon: 'discount' -%}
+      15% off on 10 bars
+      {%- if price_type == 'pp' -%}
+        (<span class="igPrice" data-product-id="{{ product.id }}" data-price-multiplier="0.15">-{{ discount_amount15 | money_with_currency }}</span>)
+      {%- endif -%}
+    </span>
+  </span>
+
+  {%- comment -%} Tiered discount prices - 20% off for 15+ items {%- endcomment -%}
+  <span class="price_20 tiered-price" data-product-id="{{ product.id }}" data-price-multiplier="0.80" style="display: none;">
+    {{ discounted_price20 | money }}
+    <span class="badge">
+      {%- render 'icon', icon: 'discount' -%}
+      20% off on 15 bars
+      {%- if price_type == 'pp' -%}
+        (<span class="igPrice" data-product-id="{{ product.id }}" data-price-multiplier="0.20">-{{ discount_amount20 | money_with_currency }}</span>)
+      {%- endif -%}
+    </span>
+  </span>
+
+  {%- if on_sale -%}
+    <span class="sr-only">{{ 'products.price.regular_price' | t }}</span>
+    <span class="price__sale inline-flex items-center h-auto relative">
+      {%- liquid
+        if settings.currency_code_enabled
+          echo compare_at_price | money_with_currency
+        else
+          echo compare_at_price | money
+        endif
+      -%}
+    </span>
+  {%- endif -%}
+
+  {%- unless hide_unit_price -%}
+    {%- assign product_variant = product.selected_or_first_available_variant -%}
+    {%- if product_variant.unit_price_measurement -%}
+      <span class="sr-only">{{ 'products.price.unit_price' | t }}</span>
+      <span class="unit-price flex items-center">
+        {%- liquid
+          capture unit_price_base_unit
+            if product_variant.unit_price_measurement
+              if product_variant.unit_price_measurement.reference_value != 1
+                echo product_variant.unit_price_measurement.reference_value
+              endif
+              echo product_variant.unit_price_measurement.reference_unit
+            endif
+          endcapture
+        -%}
+        ({{ product_variant.unit_price | money }}
+        <span aria-hidden="true">/</span>
+        <span class="sr-only">&nbsp;{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+        {{ unit_price_base_unit }})
+        </span>
+    {%- endif -%}
+  {%- endunless -%}
+</div>
+
+<script>
+(function() {
+  // Only initialize once
+  if (window.tieredPricingInitialized) return;
+  window.tieredPricingInitialized = true;
+
+  // Get cart count from DOM or localStorage
+  function getCartCount() {
+    const cartElements = document.querySelectorAll('.count-bubble, [data-cart-count], .cart-count, .cart-item-count');
+    if (cartElements.length) {
+      let cartCountText = cartElements[0].textContent.trim();
+      let cartCount = parseInt(cartCountText, 10);
+
+      if (cartCountText.length === 4) {
+        cartCount = Math.floor(cartCount / 100);
+      } else if (cartCountText.length === 2) {
+        cartCount = Math.floor(cartCount / 10);
+      }
+
+      if (!isNaN(cartCount) && cartCount >= 0) {
+        return cartCount;
+      }
+    }
+
+    if (typeof window.Shopify !== 'undefined' && window.Shopify.cart) {
+      return window.Shopify.cart.item_count || 0;
+    }
+
+    return parseInt(localStorage.getItem('cartCount')) || 0;
+  }
+
+  // Update price display based on cart count for home page / product cards
+  window.updateCartUI = function(cartCount) {
+    const hpPrices = document.querySelectorAll('.hp_price');
+    hpPrices.forEach(function(el) {
+      const regularPrice = el.querySelector('.regularPrice_noOff');
+      const price5 = el.querySelector('.price_5');
+      const price15 = el.querySelector('.price_15');
+      const price20 = el.querySelector('.price_20');
+
+      if (cartCount >= 5 && cartCount <= 9) {
+        if (price5) price5.style.display = 'block';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'none';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+        document.body.classList.add('discountshow');
+      } else if (cartCount >= 10 && cartCount <= 14) {
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'block';
+        if (price20) price20.style.display = 'none';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+        document.body.classList.add('discountshow');
+      } else if (cartCount > 14) {
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'block';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+        document.body.classList.add('discountshow');
+      } else {
+        if (regularPrice) regularPrice.style.textDecoration = 'none';
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'none';
+        document.body.classList.remove('discountshow');
+      }
+    });
+  };
+
+  // Update price display for product page
+  window.updatePPPriceCSS = function(cartCount) {
+    const ppPrices = document.querySelectorAll('.pp_price');
+    ppPrices.forEach(function(el) {
+      const regularPrice = el.querySelector('.regularPrice_noOff');
+      const price5 = el.querySelector('.price_5');
+      const price15 = el.querySelector('.price_15');
+      const price20 = el.querySelector('.price_20');
+
+      if (cartCount >= 0 && cartCount <= 4) {
+        if (regularPrice) regularPrice.style.textDecoration = 'none';
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'none';
+      } else if (cartCount >= 5 && cartCount <= 9) {
+        if (price5) price5.style.display = 'block';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'none';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+      } else if (cartCount >= 10 && cartCount <= 14) {
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'block';
+        if (price20) price20.style.display = 'none';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+      } else {
+        if (price5) price5.style.display = 'none';
+        if (price15) price15.style.display = 'none';
+        if (price20) price20.style.display = 'block';
+        if (regularPrice) regularPrice.style.textDecoration = 'line-through';
+      }
+    });
+  };
+
+  // Initialize pricing on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const initialCartCount = getCartCount();
+    localStorage.setItem('cartCount', initialCartCount);
+    if (typeof window.updateCartUI === 'function') {
+      window.updateCartUI(initialCartCount);
+    }
+    if (typeof window.updatePPPriceCSS === 'function') {
+      window.updatePPPriceCSS(initialCartCount);
+    }
+  });
+
+  // Listen for cart updates
+  document.addEventListener('cart:updated', function(e) {
+    if (e.detail && e.detail.cart) {
+      const totalItems = e.detail.cart.items.reduce(function(sum, item) {
+        return sum + item.quantity;
+      }, 0);
+      localStorage.setItem('cartCount', totalItems);
+      if (typeof window.updateCartUI === 'function') {
+        window.updateCartUI(totalItems);
+      }
+      if (typeof window.updatePPPriceCSS === 'function') {
+        window.updatePPPriceCSS(totalItems);
+      }
+    }
+  });
+
+  // Listen for body clicks to catch cart changes
+  document.body.addEventListener('click', function(e) {
+    setTimeout(function() {
+      const cartCount = getCartCount();
+      localStorage.setItem('cartCount', cartCount);
+      if (typeof window.updateCartUI === 'function') {
+        window.updateCartUI(cartCount);
+      }
+      if (typeof window.updatePPPriceCSS === 'function') {
+        window.updatePPPriceCSS(cartCount);
+      }
+    }, 1000);
+  });
+})();
+</script>

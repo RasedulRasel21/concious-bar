@@ -1,0 +1,109 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main-404": {
+      "type": "main-404",
+      "settings": {
+        "heading_size": "title-xl tracking-heading",
+        "heading_tag": "h1",
+        "padding_top": 120,
+        "padding_bottom": 120,
+        "divider": false,
+        "narrow": true,
+        "rounded": false
+      }
+    },
+    "empty-space": {
+      "type": "empty-space",
+      "settings": {
+        "desktop_height": 120,
+        "mobile_height": 20,
+        "color_background": "",
+        "gradient_background": ""
+      }
+    },
+    "images_with_text_overlay_7aFcVk": {
+      "type": "images-with-text-overlay",
+      "blocks": {
+        "subheading_h96zBc": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Add a tagline",
+            "subheading_size": "subtitle-md",
+            "secondary_color": true
+          }
+        },
+        "heading_x6NYRa": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text overlay",
+            "heading_size": "title-lg tracking-heading",
+            "heading_tag": "h2",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "text_XLYKpc": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_font": "body",
+            "text_size": "subtext-md",
+            "text_max_size": 32,
+            "text_line_height": 1.6,
+            "text_letter_spacing": 0,
+            "text_capitalize": false,
+            "secondary_color": false,
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_h96zBc",
+        "heading_x6NYRa",
+        "text_XLYKpc"
+      ],
+      "name": "t:sections.images-with-text-overlay.name",
+      "settings": {
+        "transparent_header": false,
+        "image_height": "650px",
+        "content_width": "small",
+        "content_position": "md:items-end md:justify-start",
+        "text_alignment": "left",
+        "image_height_mobile": "auto",
+        "content_position_mobile": "items-end justify-start",
+        "text_alignment_mobile": "left",
+        "color_text": "#ffffff",
+        "color_background": "",
+        "gradient_background": "",
+        "color_highlight": "#e0a580",
+        "gradient_highlight": "",
+        "color_button_text": "#171717",
+        "color_button_background": "#ffffff",
+        "color_button_gradient": "",
+        "color_overlay": "#171717",
+        "overlay_opacity": 100,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "divider": false,
+        "full_width": true,
+        "rounded": false,
+        "enable_parallax": true
+      }
+    }
+  },
+  "order": [
+    "main-404",
+    "empty-space",
+    "images_with_text_overlay_7aFcVk"
+  ]
+}

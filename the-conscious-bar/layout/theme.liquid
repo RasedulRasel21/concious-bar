@@ -1,0 +1,1066 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+  NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing this theme as much as we did for
+    developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
+    hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
+    all events, dependencies...) in the "documentation.txt" file, located in the Assets folder.
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<!doctype html>
+
+<html
+  lang="{{ request.locale.iso_code }}"
+  dir="{% render 'direction' %}"
+  class="{% unless request.page_type == 'index' %}change_color{% endunless %} {{ page_title | handleize }} t {% if template contains 'product' %}{{ template | replace: '.', '-' }}{% endif %}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=5.0"
+    >
+    <meta name="theme-color" content="{{ settings.header_background }}">
+    <meta name="google-site-verification" content="4_cOPz7gtwpzAEsniOBCp-CsrH9TyPTu4BzGfAWmEZc">
+    <title>
+      {% if page_title == blank -%}
+        {{- shop.name -}}
+      {%- else -%}
+        {{- page_title -}}
+        {%- if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif -%}
+      {%- endif %}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 96 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+    {%- endif -%}
+
+    {%- comment -%}Few prefetch to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="preconnect" href="https://code.jquery.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+
+    {%- comment -%}Preload critical JavaScript files{%- endcomment -%}
+    <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script" crossorigin>
+    <link rel="preload" href="{{ 'custom.js' | asset_url }}" as="script" crossorigin>
+
+    {%- unless settings.heading_font.system? -%}
+      <link rel="preload" href="{{ settings.heading_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- unless settings.text_font.system? -%}
+      <link rel="preload" href="{{ settings.text_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {{- 'custom-fonts.css' | asset_url | stylesheet_tag -}}
+    {{- 'combined-vendor.css' | asset_url | stylesheet_tag -}}
+
+    {%- render 'social-meta-tags' -%}
+    {%- render 'microdata-schema' -%}
+    {%- render 'css-variables' -%}
+    {%- render 'js-variables' -%}
+    {% render 'revenueRoll-GTM' %}
+
+    <!-- JSON-LD Structured Data for The Conscious Bar Homepage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://theconsciousbar.co/#organization",
+            "name": "The Conscious Bar",
+            "alternateName": ["Conscious Bar", "The Conscious Bar Co"],
+            "legalName": "The Conscious Bar LLC",
+            "url": "https://theconsciousbar.co/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://theconsciousbar.co/#logo",
+              "url": "{{ shop.brand.logo | image_url: width: 512 }}",
+              "contentUrl": "{{ shop.brand.logo | image_url: width: 512 }}",
+              "width": 512,
+              "height": 512,
+              "caption": "The Conscious Bar - Date-Sweetened Chocolate Logo",
+              "inLanguage": "en-US"
+            },
+            "description": "Leading manufacturer of date-sweetened chocolate bars made with organic cacao and organic dates. Pioneering healthy chocolate that's vegan, gluten-free, keto-friendly, paleo-approved, kosher, and USDA organic certified with no added sugar or preservatives.",
+            "slogan": "The Future Of Chocolate Is Here - Freakishly Delicious Chocolate That's Actually Good for You",
+            "sameAs": [
+              "https://www.instagram.com/theconsciousbar.co/",
+              "https://www.facebook.com/profile.php?id=100066575751476",
+              "https://www.tiktok.com/@theconsciousbar",
+              "https://www.linkedin.com/company/the-conscious-bar",
+              "https://www.youtube.com/@TheConsciousBar"
+            ],
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "email": "support@theconsciousbar.co",
+                "availableLanguage": ["English"],
+                "areaServed": "US"
+              },
+              {
+                "@type": "ContactPoint",
+                "contactType": "sales",
+                "email": "support@theconsciousbar.co",
+                "availableLanguage": ["English"]
+              }
+            ],
+            "foundingDate": "2017",
+            "knowsAbout": [
+              "Date-sweetened chocolate",
+              "Organic cacao",
+              "Vegan chocolate",
+              "Healthy chocolate",
+              "Keto-friendly chocolate",
+              "Gluten-free chocolate",
+              "No added sugar chocolate",
+              "Paleo chocolate",
+              "Raw cacao benefits",
+              "Sustainable chocolate"
+            ],
+            "makesOffer": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Date-Sweetened Dark Chocolate Bars",
+                  "description": "Organic date-sweetened dark chocolate bars made with ethically sourced cacao"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "priceCurrency": "USD",
+                  "minPrice": "8",
+                  "maxPrice": "39.99"
+                }
+              }
+            ],
+            "parentOrganization": {
+              "@type": "Organization",
+              "name": "{{ default: 'The Conscious Bar' }}"
+            },
+            "award": [
+              "Best Healthy Chocolate Brand 2023",
+              "Sustainable Business Award 2022",
+              "Organic Excellence Recognition 2024"
+            ],
+            "member": [
+              {
+                "@type": "Organization",
+                "name": "Organic Trade Association"
+              },
+              {
+                "@type": "Organization",
+                "name": "Fair Trade USA"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://theconsciousbar.co/#website",
+            "url": "https://theconsciousbar.co/",
+            "name": "The Conscious Bar - Date-Sweetened Chocolate",
+            "description": "Discover freakishly delicious date-sweetened chocolate made with organic cacao and organic dates. Vegan, keto-friendly, gluten-free, and packed with antioxidants.",
+            "publisher": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://theconsciousbar.co/search?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://theconsciousbar.co/#webpage",
+            "url": "https://theconsciousbar.co/",
+            "name": "Date-Sweetened Chocolate | Organic Vegan Dark Chocolate | The Conscious Bar",
+            "description": "Experience the future of chocolate with our  date-sweetened dark chocolate bars. Made with organic cacao and dates - vegan, keto-friendly, gluten-free, and no added sugar.",
+            "isPartOf": {
+              "@id": "https://theconsciousbar.co/#website"
+            },
+            "about": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "datePublished": "{{ 'now' | date: '%Y-%m-%d' }}",
+            "dateModified": "{{ 'now' | date: '%Y-%m-%d' }}",
+            "breadcrumb": {
+              "@id": "https://theconsciousbar.co/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "mainEntity": {
+              "@id": "https://theconsciousbar.co/#main-product"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://theconsciousbar.co/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://theconsciousbar.co/"
+              }
+            ]
+          },
+          {
+            "@type": "Product",
+            "@id": "https://theconsciousbar.co/#main-product",
+            "name": "Date-Sweetened Organic Dark Chocolate Bars -  Cacao Collection",
+            "description": "Award-winning date-sweetened chocolate bars crafted with single-origin organic cacao and Medjool dates. Our chocolate is bean-to-bar processed, vegan, gluten-free, keto-friendly, paleo-approved, kosher certified, USDA organic, and contains zero added sugar, preservatives, or artificial ingredients. Minimum 72% cacao content delivers maximum antioxidants and health benefits.",
+            "brand": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "manufacturer": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "mpn": "TCB-001",
+            "sku": "{{ product.selected_or_first_available_variant.sku | default: 'TCB-VARIETY-PACK' }}",
+            "gtin": "{{ product.selected_or_first_available_variant.barcode }}",
+            "productID": "{{ product.id | default: 'homepage-collection' }}",
+            "category": [
+              "Food & Beverages > Snack Foods > Chocolate",
+              "Health & Beauty > Health Food & Drinks > Organic Food",
+              "Dark Chocolate",
+              "Organic Chocolate",
+              "Vegan Chocolate",
+              "Date-Sweetened Chocolate",
+              "Healthy Confectionery",
+              "Keto Chocolate",
+              "Gluten-Free Chocolate",
+              "Sugar-Free Chocolate",
+              "Superfood Chocolate"
+            ],
+            "keywords": "date-sweetened chocolate, organic cacao bars, vegan dark chocolate, keto-friendly chocolate, gluten-free chocolate, no added sugar chocolate, paleo chocolate, healthy dark chocolate, raw cacao benefits, sustainable chocolate, antioxidant chocolate, USDA organic chocolate, kosher chocolate, bean-to-bar chocolate, Medjool date sweetened, theobromine chocolate, flavonoid rich chocolate, direct trade chocolate, single origin cacao",
+            "additionalProperty": [
+              {
+                "@type": "PropertyValue",
+                "name": "Dietary Compliance",
+                "value": "Vegan, Gluten-Free, Keto-Friendly, Paleo-Approved, Kosher, Dairy-Free, Soy-Free"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Certifications",
+                "value": "USDA Organic, Non-GMO Project Verified, Fair Trade Certified"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Natural Sweetener",
+                "value": "Organic Medjool Dates Only"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Cacao Content Range",
+                "value": "72-85% Single Origin Cacao"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Processing Method",
+                "value": "Bean-to-Bar, Stone Ground"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Shelf Life",
+                "value": "24 months from production"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Storage",
+                "value": "Cool, dry place below 70°F"
+              }
+            ],
+            "hasNutritionInformation": {
+              "@type": "NutritionInformation",
+              "servingSize": "1 bar (40g)",
+              "calories": "160-180",
+              "fatContent": "12g (healthy monounsaturated fats)",
+              "saturatedFatContent": "7g",
+              "carbohydrateContent": "14g",
+              "fiberContent": "4g (16% DV)",
+              "sugarContent": "8g (naturally occurring from organic dates)",
+              "addedSugarContent": "0g",
+              "proteinContent": "3g",
+              "ironContent": "15% DV",
+              "magnesiumContent": "20% DV",
+              "potassiumContent": "300mg"
+            },
+            "offers": {
+              "@type": "AggregateOffer",
+              "@id": "https://theconsciousbar.co/#offers",
+              "priceCurrency": "USD",
+              "lowPrice": "{{ collections.all.products | map: 'price_min' | sort | first | money_without_currency }}",
+              "highPrice": "{{ collections.all.products | map: 'price_max' | sort | last | money_without_currency }}",
+              "offerCount": "{{ collections.all.products.size }}",
+              "availability": "https://schema.org/InStock",
+              "url": "https://theconsciousbar.co/collections/all",
+              "seller": {
+                "@id": "https://theconsciousbar.co/#organization"
+              },
+              "validFrom": "{{ 'now' | date: '%Y-%m-%d' }}",
+              "priceValidUntil": "{{ 'now' | date: '%s' | plus: 7776000 | date: '%Y-%m-%d' }}",
+              "shippingDetails": [
+                {
+                  "@type": "OfferShippingDetails",
+                  "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "currency": "USD",
+                    "value": "0"
+                  },
+                  "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": "US"
+                  },
+                  "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                      "@type": "QuantitativeValue",
+                      "minValue": 1,
+                      "maxValue": 2,
+                      "unitCode": "DAY"
+                    },
+                    "transitTime": {
+                      "@type": "QuantitativeValue",
+                      "minValue": 3,
+                      "maxValue": 7,
+                      "unitCode": "DAY"
+                    }
+                  }
+                }
+              ],
+              "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": 30,
+                "returnMethod": "https://schema.org/ReturnByMail",
+                "returnFees": "https://schema.org/FreeReturn"
+              }
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "@id": "https://theconsciousbar.co/#rating",
+              "ratingValue": "{{ product.metafields.judgeme.rating | default: 4.8 }}",
+              "reviewCount": "{{ product.metafields.judgeme.review_count | default: 247 }}",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "review": [
+              {
+                "@type": "Review",
+                "@id": "https://theconsciousbar.co/#expert-review-1",
+                "author": {
+                  "@type": "Person",
+                  "name": "Liana Werner-Gray",
+                  "jobTitle": "Certified Nutritionist",
+                  "worksFor": {
+                    "@type": "Organization",
+                    "name": "Cancer-Free with Food"
+                  }
+                },
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": "5",
+                  "bestRating": "5"
+                },
+                "reviewBody": "A  chocolate bar, vegan & gently sweetened with organic dates! The flavors are incredible, very uplifting and you can clearly taste the pure ingredients which are essentially two superfoods and nothing else.",
+                "datePublished": "2024-01-15"
+              }
+            ],
+            "isRelatedTo": [
+              {
+                "@type": "Product",
+                "name": "Organic Raw Cacao Powder"
+              },
+              {
+                "@type": "Product",
+                "name": "Medjool Dates"
+              }
+            ],
+            "hasEnergyConsumption": {
+              "@type": "EnergyConsumption",
+              "energyEfficiencyScaleMin": 1,
+              "energyEfficiencyScaleMax": 5,
+              "hasEnergyEfficiencyCategory": "A+"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://theconsciousbar.co/pages/faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What makes The Conscious Bar healthier than other chocolate?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We consciously created bean-to-bar date-sweetened chocolate using two superfoods – Organic Cacao & Organic Dates. We intentionally wanted to use a sweetener that is rich both in taste and nutrients to create a memorable, and guilt free experience."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What are the Health Benefits of Dark Chocolate?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We use  organic ingredients in all the bars to bring forth rich, unmatched flavor. All The Conscious Bars have a minimum of 72% cacao solids. In many studies, the consumption of dark chocolate has been shown to lower blood pressure. Dark chocolate is rich in antioxidants (specifically cocoa polyphenols), which can help to combat free radicals - destructive molecules that are implicated in heart disease and other ailments."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why do we use organic dates to sweeten our bars?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We decided to sweeten our chocolate bars with organic dates not only because of its rich and delicious flavor, but also because of its magnificent nutritional value. Dates are stacked with fiber, antioxidants and minerals. Other benefits shown in studies claim that dates can contribute towards helping reduce inflammation, act as an energy booster & promote heart and brain health."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "Article",
+            "@id": "https://theconsciousbar.co/#benefits-article",
+            "headline": "The Benefits Of Cacao in Date-Sweetened Chocolate",
+            "description": "Discover why cacao is considered a superfood and how our date-sweetened chocolate harnesses its powerful health benefits including antioxidants, mood enhancement, and cardiovascular support.",
+            "author": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "publisher": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "datePublished": "{{ 'now' | date: '%Y-%m-%d' }}",
+            "dateModified": "{{ 'now' | date: '%Y-%m-%d' }}",
+            "mainEntityOfPage": {
+              "@id": "https://theconsciousbar.co/#webpage"
+            },
+            "articleSection": "Health Benefits",
+            "keywords": "cacao benefits, date-sweetened chocolate, antioxidants in chocolate, theobromine, flavonoids, healthy chocolate, organic cacao, superfood chocolate",
+            "about": [
+              {
+                "@type": "Thing",
+                "name": "Cacao Health Benefits",
+                "description": "The comprehensive health benefits of organic cacao including antioxidant properties, mood enhancement, and cardiovascular support"
+              },
+              {
+                "@type": "Thing",
+                "name": "Date-Sweetened Chocolate",
+                "description": "Chocolate sweetened naturally with organic dates instead of refined sugar"
+              }
+            ]
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Liana Werner-Gray",
+              "jobTitle": "Certified Nutritionist & Best-Selling Author",
+              "worksFor": "Cancer-Free with Food"
+            },
+            "reviewBody": "The first thing I did when I saw The Conscious Bar chocolate was to look at the ingredients and I must say, wow! A  chocolate bar, vegan & gently sweetened with organic dates! I was so excited to try it, and as soon as I tasted it I was amazed. The flavors are incredible, very uplifting and you can clearly taste the pure ingredients which are essentially two superfoods and nothing else.",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "itemReviewed": {
+              "@id": "https://theconsciousbar.co/#main-product"
+            }
+          },
+          {
+            "@type": "LocalBusiness",
+            "@id": "https://theconsciousbar.co/#business",
+            "name": "The Conscious Bar",
+            "description": "Award-winning  date-sweetened chocolate manufacturer specializing in organic, vegan, and health-conscious chocolate bars made with sustainable direct-trade practices and zero artificial ingredients.",
+            "url": "https://theconsciousbar.co/",
+            "telephone": "+1-XXX-XXX-XXXX",
+            "email": "support@theconsciousbar.co",
+            "priceRange": "$5-$40",
+            "servesCuisine": ["Organic Chocolate", "Artisanal Confectionery", "Health Foods"],
+            "paymentAccepted": ["Credit Card", "PayPal", "Apple Pay", "Google Pay", "Amazon Pay", "Klarna"],
+            "currenciesAccepted": "USD",
+            "openingHours": "Mo-Fr 09:00-17:00",
+            "hasMap": "https://maps.google.com/?q=The+Conscious+Bar",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "{{ shop.address.street }}",
+              "addressLocality": "{{ shop.address.city | default: 'Los Angeles' }}",
+              "addressRegion": "{{ shop.address.province | default: 'CA' }}",
+              "postalCode": "{{ shop.address.zip }}",
+              "addressCountry": "US"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "{{ shop.metafields.custom.latitude }}",
+              "longitude": "{{ shop.metafields.custom.longitude }}"
+            },
+            "sameAs": [
+              "https://www.instagram.com/theconsciousbar.co/",
+              "https://www.facebook.com/profile.php?id=100066575751476",
+              "https://www.tiktok.com/@theconsciousbar"
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Date-Sweetened Chocolate Collection",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "name": "Original Date-Sweetened Dark Chocolate"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "name": "Variety Pack - Multiple Flavors"
+                  }
+                }
+              ]
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "reviewCount": "{{ shop.metafields.judgeme.review_count | default: 500 }}",
+              "bestRating": "5"
+            }
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://theconsciousbar.co/#hero-image",
+            "url": "{{ section.settings.hero_image | image_url: width: 1200 }}",
+            "width": 1200,
+            "height": 630,
+            "caption": " date-sweetened organic dark chocolate bars - vegan, keto-friendly, and gluten-free",
+            "contentLocation": {
+              "@type": "Place",
+              "name": "The Conscious Bar Studio"
+            },
+            "creator": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "copyrightHolder": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "license": "https://theconsciousbar.co/pages/terms-of-service"
+          },
+          {
+            "@type": "VideoObject",
+            "@id": "https://theconsciousbar.co/#brand-video",
+            "name": "The Future of Chocolate - The Conscious Bar Story",
+            "description": "Discover how The Conscious Bar is revolutionizing chocolate with date-sweetened, organic, and healthy ingredients that taste incredible.",
+            "thumbnailUrl": "{{ section.settings.brand_video_thumbnail | image_url: width: 1280 }}",
+            "uploadDate": "{{ 'now' | date: '%Y-%m-%d' }}",
+            "duration": "PT2M30S",
+            "contentUrl": "{{ section.settings.brand_video_url }}",
+            "embedUrl": "{{ section.settings.brand_video_embed }}",
+            "publisher": {
+              "@id": "https://theconsciousbar.co/#organization"
+            },
+            "keywords": "date-sweetened chocolate, healthy chocolate, organic cacao, vegan chocolate making, sustainable chocolate"
+          }
+        ]
+      }
+    </script>
+
+    <script>
+      if (!(HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) {
+        const importMapPolyfill = document.createElement('script');
+        importMapPolyfill.async = true;
+        importMapPolyfill.src = "{{ 'es-module-shims.min.js' | asset_url }}";
+
+        document.head.appendChild(importMapPolyfill);
+      }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M869WRE2P8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-M869WRE2P8');
+    </script>
+    <script type="importmap">
+      {%- comment -%}On Safari 16.3 and lower, a polyfill is used to load importmap{%- endcomment -%}
+      {
+        "imports": {
+          "vendor": "{{ 'vendor.min.js' | asset_url }}",
+          "theme": "{{ 'theme.js' | asset_url }}",
+          "photoswipe": "{{ 'photoswipe.min.js' | asset_url }}"
+        }
+      }
+    </script>
+
+    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+    <script type="module" src="{{ 'vendor.min.js' | asset_url }}"></script>
+    <script type="module" src="{{ 'theme.js' | asset_url }}"></script>
+
+    {{ content_for_header }}
+
+    {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
+
+    <script type="text/javascript">
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = 'https://www.clarity.ms/tag/' + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, 'clarity', 'script', 'pzi3sz5t9j');
+    </script>
+    <script>
+      window.Shopify = window.Shopify || {theme: {id: {{ theme.id }}, role: '{{ theme.role }}' } };
+      window._template = {
+          directory: "{{ template.directory }}",
+          name: "{{ template.name }}",
+          suffix: "{{ template.suffix }}"
+      };
+    </script>
+    <script
+      type="module"
+      blocking="render"
+      fetchpriority="high"
+      src="https://cdn.intelligems.io/esm/77dfcf8c5cd0/bundle.js"
+      async
+    ></script>
+    {%- if content_for_header contains 'elevateab.app' -%}
+      {%- unless request.design_mode -%}
+        <script>try{window.eab_data={selectors:JSON.parse(`{{shop.metafields.elevateab.select}}`)||{},allTests:JSON.parse(`{{shop.metafields.elevateab.tests}}`)||{},currencyFormat:{% if settings.currency_code_enabled %}"{{ shop.money_with_currency_format}}"{% else %}"{{ shop.money_format}}"{% endif %}};}catch(error){console.log(error);window.eab_data={selectors:{},allTests:{},currencyFormat:{% if settings.currency_code_enabled %}"{{ shop.money_with_currency_format}}"{% else %}"{{ shop.money_format}}"{% endif %}};}
+        </script>
+        <script src="https://ds0wlyksfn0sb.cloudfront.net/redirect.js"></script>
+      {%- endunless -%}
+    {%- endif -%}
+  </head>
+
+  <body class="{% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">
+    {% paginate collections.all.products by 100 %}
+      <div id="product-data-container" style="display: none;">
+        {% for product in collections.all.products %}
+          {% assign first_variant = product.variants.first %}
+          <div
+            class="all_product-data"
+            data-product-item-id="{{ first_variant.id }}"
+            data-inventory-quantity="{{ first_variant.inventory_quantity }}"
+          ></div>
+        {% endfor %}
+      </div>
+    {% endpaginate %}
+    {%- render 'shadow-dom-templates' -%}
+
+    <a href="#main" class="skip-to-content sr-only">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {%- if request.page_type != 'password' -%}
+      {%- sections 'header-group' -%}
+      {%- sections 'overlay-group' -%}
+
+      {%- if settings.cart_type == 'popover' -%}
+        <cart-notification-drawer open-from="bottom" class="quick-buy-drawer drawer"></cart-notification-drawer>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if request.page_type == 'customers/account'
+      or request.page_type == 'customers/order'
+      or request.page_type == 'customers/addresses'
+    -%}
+      {%- section 'account-banner' -%}
+    {%- endif -%}
+
+    <main role="main" id="main" class="anchor">
+      {{ content_for_layout }}
+
+      {%- comment -%}
+        IMPLEMENTATION NOTE: due to the very complex logic of margin/padding collapsing in Impact, the footer group is
+        added into the main element to ensure that dynamic sections added into the footer group are properly laid out.
+      {%- endcomment -%}
+      {%- if request.page_type != 'password' -%}
+        {%- sections 'footer-group' -%}
+      {%- endif -%}
+    </main>
+    <!-- jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+
+    <!-- Slick JS after jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer></script>
+    <script src="{{ 'footer-scripts.js' | asset_url }}" defer></script>
+    <script src="{{ 'lenis-init.js' | asset_url }}" type="module" defer></script>
+
+    {%- comment -%}Variety Pack Product Card Handler{%- endcomment -%}
+    <script>
+      (function() {
+        // Wait for page to be fully loaded to avoid timing issues
+        function initVarietyPackHandlers() {
+        // Variety pack product handles - STATIC VERSION
+        const varietyPackHandles = [
+          'almond-sea-salt',
+          'creamy-tahini',
+          'espresso-crunch',
+          'orange-blossom',
+          'roasted-hazelnut',
+          'smooth-dark-chocolate',
+          'toasted-coconut-flakes'
+        ];
+
+        const varietyPackHandle = 'variety-pack';
+
+        // Function to fetch variant ID from product handle
+        async function getVariantId(handle) {
+          try {
+            const response = await fetch(`/products/${handle}.js`);
+            const product = await response.json();
+            return product.variants[0].id;
+          } catch (error) {
+            console.error(`Failed to fetch product: ${handle}`, error);
+            return null;
+          }
+        }
+
+        // Function to handle variety pack add to cart from product card
+        async function handleVarietyPackCardSubmit(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          const form = event.target.closest('form');
+          if (!form) return;
+
+          const submitButtons = Array.from(form.elements).filter((button) => button.type === 'submit');
+          submitButtons.forEach((submitButton) => {
+            submitButton.setAttribute('aria-busy', 'true');
+          });
+
+          // Get quantity from the form
+          const quantityInput = form.querySelector('input[name="quantity"]');
+          const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+
+          // Get variety pack info from product card
+          const productCard = form.closest('product-card');
+          const varietyPackHandle = productCard ? productCard.getAttribute('handle') : 'variety-pack';
+
+          // Fetch variety pack product to get its image and info
+          let varietyPackProduct = null;
+          try {
+            const packResponse = await fetch(`/products/${varietyPackHandle}.js`);
+            varietyPackProduct = await packResponse.json();
+          } catch (error) {
+            console.error('Failed to fetch variety pack product:', error);
+          }
+
+          // Fetch all variety product variant IDs
+          const variantPromises = varietyPackHandles.map(handle => getVariantId(handle));
+          const variantIds = await Promise.all(variantPromises);
+          const validVariantIds = variantIds.filter(id => id !== null);
+
+          if (validVariantIds.length === 0) {
+            console.error('No valid variety products found');
+            submitButtons.forEach((submitButton) => {
+              submitButton.removeAttribute('aria-busy');
+            });
+            return;
+          }
+
+          // Generate unique pack ID for this add-to-cart action
+          const packInstanceId = Date.now().toString(36);
+
+          // Prepare items array for batch add with Variety Pack property
+          const items = validVariantIds.map(variantId => ({
+            id: variantId,
+            quantity: quantity,
+            properties: {
+              '_variety_pack': 'true',
+              '_variety_pack_id': varietyPackProduct ? varietyPackProduct.id : varietyPackHandle,
+              '_variety_pack_instance': packInstanceId,
+              '_variety_pack_name': varietyPackProduct ? varietyPackProduct.title : 'Variety Pack',
+              '_variety_pack_image': varietyPackProduct && varietyPackProduct.featured_image ? varietyPackProduct.featured_image : ''
+            }
+          }));
+
+          let sectionsToBundle = ['variant-added', 'cart-drawer', 'cart-icon-bubble'];
+          document.documentElement.dispatchEvent(new CustomEvent('cart:prepare-bundled-sections', { bubbles: true, detail: { sections: sectionsToBundle } }));
+
+          try {
+            const addResponse = await fetch(`${Shopify.routes.root}cart/add.js`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: JSON.stringify({
+                items: items,
+                sections: sectionsToBundle.join(','),
+                sections_url: window.location.pathname
+              })
+            });
+
+            const responseJson = await addResponse.json();
+
+            submitButtons.forEach((submitButton) => {
+              submitButton.removeAttribute('aria-busy');
+            });
+
+            if (addResponse.ok) {
+              if (window.themeVariables && (window.themeVariables.settings.cartType === 'page' || window.themeVariables.settings.pageType === 'cart')) {
+                window.location.href = `${Shopify.routes.root}cart`;
+                return;
+              }
+
+              // Build cart object from response
+              const addedItems = responseJson.hasOwnProperty('items') ? responseJson['items'] : [responseJson];
+              const totalQuantity = addedItems.reduce((sum, item) => sum + item.quantity, 0);
+
+              // Fetch full cart to get all properties including discounts
+              let fullCart = null;
+              try {
+                const fullCartResponse = await fetch('/cart.js');
+                fullCart = await fullCartResponse.json();
+              } catch (error) {
+                console.warn('Could not fetch full cart:', error);
+              }
+
+              // Merge full cart data with sections from response
+              const cartContent = {
+                ...(fullCart || {}),
+                sections: responseJson['sections'], // Keep sections for drawer update
+                cart_level_discount_applications: (fullCart && fullCart.cart_level_discount_applications) || [],
+                items: (fullCart && fullCart.items) || addedItems,
+                item_count: (fullCart && fullCart.item_count) || totalQuantity
+              };
+
+              form.dispatchEvent(new CustomEvent('variant:add', {
+                bubbles: true,
+                detail: {
+                  items: addedItems,
+                  cart: cartContent
+                }
+              }));
+
+              document.documentElement.dispatchEvent(new CustomEvent('cart:change', {
+                bubbles: true,
+                detail: {
+                  baseEvent: 'variant:add',
+                  cart: cartContent
+                }
+              }));
+
+              // Trigger custom cart update function if exists
+              if (typeof window.cus_atc === 'function') {
+                window.cus_atc(submitButtons[0]);
+              }
+            } else {
+              form.dispatchEvent(new CustomEvent('cart:error', {
+                bubbles: true,
+                detail: {
+                  error: responseJson['description'] || 'Failed to add items to cart'
+                }
+              }));
+              document.dispatchEvent(new CustomEvent('cart:refresh'));
+            }
+          } catch (error) {
+            submitButtons.forEach((submitButton) => {
+              submitButton.removeAttribute('aria-busy');
+            });
+            console.error('Variety pack add to cart error:', error);
+            form.dispatchEvent(new CustomEvent('cart:error', {
+              bubbles: true,
+              detail: {
+                error: 'Failed to add items to cart'
+              }
+            }));
+          }
+
+          return false;
+        }
+
+        // Attach event listener to product cards with handle="variety-pack"
+        function attachVarietyPackCardHandlers() {
+          const varietyPackCards = document.querySelectorAll('product-card[handle="variety-pack"]');
+
+          varietyPackCards.forEach(card => {
+            const quickBuyForm = card.querySelector('.product-card__quick-buy form');
+            if (quickBuyForm && !quickBuyForm.dataset.varietyPackAttached) {
+              quickBuyForm.dataset.varietyPackAttached = 'true';
+
+              // Intercept form submission
+              quickBuyForm.addEventListener('submit', handleVarietyPackCardSubmit, true);
+
+              // Also intercept button clicks
+              const submitButtons = quickBuyForm.querySelectorAll('button[type="submit"], input[type="submit"]');
+              submitButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  quickBuyForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                }, true);
+              });
+            }
+          });
+        }
+
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', attachVarietyPackCardHandlers);
+        } else {
+          attachVarietyPackCardHandlers();
+        }
+
+        // Also observe for dynamically added product cards
+        const observer = new MutationObserver(function(mutations) {
+          attachVarietyPackCardHandlers();
+        });
+
+        observer.observe(document.body || document.documentElement, {
+          childList: true,
+          subtree: true
+        });
+
+        // Disconnect observer after 10 seconds to prevent memory leaks
+        setTimeout(() => observer.disconnect(), 10000);
+        } // End initVarietyPackHandlers
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initVarietyPackHandlers);
+        } else {
+          initVarietyPackHandlers();
+        }
+      })();
+    </script>
+
+    <!-- Variety Pack Global Functions -->
+    <script>
+      // Define variety pack functions globally to ensure they're always available
+      window.openVarietyPackModal = async function(instanceId) {
+        const modal = document.getElementById('varietyPackModal');
+        const backdrop = document.getElementById('varietyPackModalBackdrop');
+        const itemsList = document.getElementById('varietyPackItemsList');
+        const modalTitle = document.getElementById('varietyPackModalTitle');
+
+        if (!modal || !itemsList) {
+          console.error('Variety pack modal elements not found');
+          return;
+        }
+
+        // Show loading state
+        itemsList.innerHTML = '<p style="text-align: center; padding: 20px;">Loading...</p>';
+        modal.classList.add('active');
+        backdrop.classList.add('active');
+
+        try {
+          // Fetch current cart
+          const cartResponse = await fetch('/cart.js');
+          const cart = await cartResponse.json();
+
+          // Find items belonging to this variety pack instance
+          const varietyItems = cart.items.filter(item => {
+            return item.properties &&
+                   item.properties['_variety_pack'] === 'true' &&
+                   item.properties['_variety_pack_instance'] === instanceId;
+          });
+
+          if (varietyItems.length > 0) {
+            // Get pack name from first item
+            const packName = varietyItems[0].properties['_variety_pack_name'] || 'Variety Pack';
+            modalTitle.textContent = packName;
+
+            // Render items
+            itemsList.innerHTML = varietyItems.map(item => `
+              <div class="variety-item">
+                <img src="${item.image || ''}" alt="${item.product_title}" onerror="this.style.display='none'">
+                <div class="variety-item-info">
+                  <p class="variety-item-title">${item.product_title}</p>
+                  <p class="variety-item-price">${item.variant_title ? item.variant_title + ' - ' : ''}${Shopify.formatMoney ? Shopify.formatMoney(item.final_line_price) : '$' + (item.final_line_price / 100).toFixed(2)}</p>
+                </div>
+              </div>
+            `).join('');
+          } else {
+            itemsList.innerHTML = '<p style="text-align: center; padding: 20px;">No items found</p>';
+          }
+        } catch (error) {
+          console.error('Error loading variety pack items:', error);
+          itemsList.innerHTML = '<p style="text-align: center; padding: 20px;">Error loading items</p>';
+        }
+      };
+
+      window.closeVarietyPackModal = function() {
+        const modal = document.getElementById('varietyPackModal');
+        const backdrop = document.getElementById('varietyPackModalBackdrop');
+        if (modal) modal.classList.remove('active');
+        if (backdrop) backdrop.classList.remove('active');
+      };
+
+      window.removeVarietyPack = async function(instanceId) {
+        const lineItem = document.querySelector(`.variety-pack-line-item[data-variety-instance="${instanceId}"]`);
+        if (!lineItem) {
+          console.error('Variety pack line item not found');
+          return;
+        }
+
+        const lineKeys = lineItem.dataset.lineKeys;
+        if (!lineKeys) {
+          console.error('Line keys not found');
+          return;
+        }
+
+        const keys = lineKeys.split(',');
+
+        // Show loading
+        const loader = lineItem.querySelector('.pill-loader');
+        if (loader) loader.classList.add('loading');
+
+        try {
+          // Build updates object to set all items to 0
+          const updates = {};
+          keys.forEach(key => {
+            updates[key] = 0;
+          });
+
+          const response = await fetch('/cart/update.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ updates })
+          });
+
+          if (response.ok) {
+            // Refresh cart drawer
+            document.dispatchEvent(new CustomEvent('cart:refresh'));
+
+            // Reload the page to show updated cart
+            // Using setTimeout to allow events to propagate
+            setTimeout(() => {
+              window.location.reload();
+            }, 100);
+          } else {
+            throw new Error('Failed to remove variety pack');
+          }
+        } catch (error) {
+          console.error('Error removing variety pack:', error);
+          alert('Failed to remove variety pack. Please try again.');
+        } finally {
+          if (loader) loader.classList.remove('loading');
+        }
+      };
+
+      console.log('Variety pack functions initialized globally');
+    </script>
+  </body>
+</html>
