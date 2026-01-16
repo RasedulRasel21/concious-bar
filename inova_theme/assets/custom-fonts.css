@@ -1,0 +1,102 @@
+/* Quincy CF - Regular */
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Regular.eot');
+    src: local('Quincy CF'), local('QuincyCF-Regular'),
+        url('QuincyCF-Regular.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Regular.woff2') format('woff2'),
+        url('QuincyCF-Regular.woff') format('woff'),
+        url('QuincyCF-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Quincy CF - Regular Italic */
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-RegularItalic.eot');
+    src: local('Quincy CF Italic'), local('QuincyCF-RegularItalic'),
+        url('QuincyCF-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-RegularItalic.woff2') format('woff2'),
+        url('QuincyCF-RegularItalic.woff') format('woff'),
+        url('QuincyCF-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Helvetica Neue - System font stack with fallbacks */
+/* Light */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue Light'), local('HelveticaNeue-Light');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Light Italic */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue Light Italic'), local('HelveticaNeue-LightItalic');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Regular */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue'), local('HelveticaNeue');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Regular Italic */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue Italic'), local('HelveticaNeue-Italic');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue Bold'), local('HelveticaNeue-Bold');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+    font-family: 'Helvetica Neue Custom';
+    src: local('Helvetica Neue Bold Italic'), local('HelveticaNeue-BoldItalic');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Legitima - Italic Only */
+/* Note: If you have Legitima font files, add them to assets and uncomment/update the paths below */
+/*
+@font-face {
+    font-family: 'Legitima';
+    src: url('Legitima-Italic.woff2') format('woff2'),
+         url('Legitima-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+*/
+
+/* CSS Custom Properties for easy font usage */
+:root {
+    --font-quincy: 'Quincy CF', Georgia, serif;
+    --font-helvetica: 'Helvetica Neue Custom', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-legitima: 'Legitima', Georgia, serif;
+}
